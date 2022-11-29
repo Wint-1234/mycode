@@ -2,19 +2,35 @@
 
 # Import modules
 from flask import Flask
-from flask import redirect
-from flask import url_for
 from flask import request
 from flask import render_template
 from flask import jsonify
-import random
 import requests
+
+# ======================================================================================================
+# This API has a landing page with the top-grossing movie of each calendar year.                        
+# There are multiple endpoints provided, most of which query another API (OMDb API)
+# to gather information and return it to the client. Endpoints include:
+#
+#    -> ("/") = Landing page, return all movies as JSON with respective year
+#    -> ("/allMovies") = Returns list of top-grossing movies of each calendar year 
+#    -> ("/allMoviesWithInfo") = Returns movie-specific data of the top-grossing movies
+#    -> ("/searchForMovie/<movie>") = Returns interactive html that injects the searched data
+#                                  onto the page using jinja2
+#    -> ("/searchForMovieNoJinJa2/<movie>") = Returns movie data with no html
+#    -> ("/searchForMovieByYear/<movie>/<year>") = Returns movie-specific data, with an added
+#                                               search parameter of year
+#    -> ("/searchForMovieAndAwards/<movie>") = Returns movie awards
+#    -> ("/plotAndRatings/<movie>") = Returns the plot and ratings of a movie   
+
+# Movie info contains the following: "Actors", "Awards", "BoxOffice", "Country", "DVD", "Director",
+# "Genre", "Language", "Metascore": "73", "Plot", "Poster", "Production", "Rated", "Ratings",
+# "Released", "Title", etc.
+# ======================================================================================================
 
 apiURL = "https://www.omdbapi.com/?"            # URL for OMDb API Database
 top_movies_list_with_info = []
 
-# Top-grossing movie of each calendar year (based on worldwide box office) 2022 - 1975,
-# Source = https://www.the-numbers.com/movies/#tab=year owned by Nash Information Services, LLC
 # Top-grossing movie of each calendar year (based on worldwide box office) 2022 - 1975,
 # Source = https://www.the-numbers.com/movies/#tab=year owned by Nash Information Services, LLC
 top_movies = ["Top Gun: Maverick", "Spider-Man: No Way Home", "Demon Slayer the Movie: Mugen Train", "Avengers: Endgame",
@@ -100,3 +116,4 @@ def plotAndRatings(movie):
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=2224) # runs the application
+
